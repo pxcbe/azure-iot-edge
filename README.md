@@ -7,7 +7,7 @@ Alternatively to the download of the installer the bin can be downloaded directl
 
 ### Download the Project
 ```bash
-git clone https://gitlab.phoenixcontact.com/ow/3kikefgtko.git
+git clone https://github.com/pxcbe/azure-iot-edge.git
 cd azure-iot-edge
 ```
 
