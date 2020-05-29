@@ -34,26 +34,29 @@ git clone https://gitlab.phoenixcontact.com/ow/3kikefgtko.git
 cd azure-iot-edge
 ```
 
-# Download docker and replace the version (example 19.03.5)
+## Download docker and replace the version (example 19.03.5)
 ```bash
 export VERSION=19.03.5
 chmod +x download.sh
-./download.sh ```
-
+./download.sh
+```
+## Create 
 sudo passwd
 su root
 
-# Execute Setup.sh in archive
+## Execute Setup.sh in archive
 ```bash
 cd archive
 chmod +x setup.sh
-./setup.sh```
+./setup.sh
+```
 
 ## modify IoT Parameters and Setup EdgeDevice
 ```bash
 cd ..
 chmod +x SetupEdge.sh
-./SetupEdge.sh ```
+./SetupEdge.sh
+```
 
 ## Add connection string
 nano /etc/iotedge/config.yaml
