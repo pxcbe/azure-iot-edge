@@ -41,7 +41,8 @@ chmod +x download.sh
 ./download.sh
 ```
 ## Create a root-user and log in as root
-```bash sudo passwd
+```bash
+sudo passwd
 su root
 ```
 
