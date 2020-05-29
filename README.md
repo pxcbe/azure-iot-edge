@@ -68,10 +68,14 @@ nano /etc/iotedge/config.yaml
 1. Copy paste your connectionstring
 2. Set the hostname to:
 ```
-axcf212
+axcf2125
 ```
 3. change the listen ports to :
-
+```
+listen: 
+   management_uri: "unix:///var/run/iotedge/mgmt.sock" 
+   workload_uri: "unix:///var/run/iotedge/workload.sock"
+```
 
 ## Reboot the controller
 ```bash
