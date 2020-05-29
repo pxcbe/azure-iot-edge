@@ -27,33 +27,35 @@ Kernel check-config for docker https://github.com/moby/moby/blob/master/contrib/
 
 Alternatively to the download of the installer the bin can be downloaded directly to the target.
 
-```bash
+
 # Download the Project
+```bash
 git clone https://gitlab.phoenixcontact.com/ow/3kikefgtko.git
-cd 3kikefgtko
+cd azure-iot-edge```
 
 # Download docker and replace the version (example 19.03.5)
+```bash
 export VERSION=19.03.5
 chmod +x download.sh
-./download.sh
+./download.sh ```
 
 sudo passwd
 su root
 
 # Execute Setup.sh in archive
+```bash
 cd archive
 chmod +x setup.sh
-./setup.sh
+./setup.sh```
 
 ## modify IoT Parameters and Setup EdgeDevice
-
-
+```bash
 cd ..
 chmod +x SetupEdge.sh
-./SetupEdge.sh
+./SetupEdge.sh ```
 
 ## Add connection string
-nano /etc/iotedge/autoConfig.yaml
+nano /etc/iotedge/config.yaml
 
 reboot
 ```
