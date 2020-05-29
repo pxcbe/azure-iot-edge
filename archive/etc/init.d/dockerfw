@@ -1,0 +1,23 @@
+#!/bin/bash
+### BEGIN INIT INFO
+## Load firewalls rules for docker
+### END INIT INFO
+
+case "$1" in 
+  start) 
+
+    nft -f /etc/nftables/docker.nft
+    echo "load firewall ruleset for docker"
+    ;;   
+
+  stop)
+    nft flush table ip docker 
+    echo "flush firewall ruleset for docker"
+    ;;
+
+  *) echo "Usage:/etc/init.d/dockerfw {start|stop}"
+     exit 1
+     ;;
+esac
+
+exit 0

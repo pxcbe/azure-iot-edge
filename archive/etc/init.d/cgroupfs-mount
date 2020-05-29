@@ -1,0 +1,112 @@
+#!/bin/sh
+set -e
+
+### BEGIN INIT INFO
+# Provides:           cgroupfs-mount
+# Required-Start:     $syslog $remote_fs
+# Required-Stop:      $syslog $remote_fs
+# Default-Start:      2 3 4 5
+# Default-Stop:       0 1 6
+# Short-Description:  Set up cgroupfs mounts.
+# Description:
+#  Control groups are a kernel mechanism for tracking and imposing
+#  limits on resource usage on groups of tasks.
+### END INIT INFO
+
+BASE=cgroupfs-mount
+
+# Get lsb functions
+if [ -f /lib/lsb/init-functions ]; then
+	. /lib/lsb/init-functions
+else
+	if [ -f /etc/init.d/functions ]; then
+		. /etc/init.d/functions
+	fi
+
+	# int log_begin_message (char *message)
+	log_begin_msg () {
+		# If no arguments were passed, return
+		if [ -z "${1:-}" ]; then
+			return 1
+		fi
+		echo -n "$@" || true
+	}
+
+	# int log_end_message (int exitstatus)
+	log_end_msg () {
+		# If no arguments were passed, return
+		if [ -z "${1:-}" ]; then
+			return 1
+		fi
+
+		local retval
+		retval=$1
+
+		if [ $1 -eq 0 ]; then
+			echo "." || true
+		elif [ $1 -eq 255 ]; then
+			echo -e " (warning)." || true
+		else
+			echo -e " failed!" || true
+		fi
+	}
+	
+	log_success_msg () {
+		if [ -n "${1:-}" ]; then
+			log_begin_msg $@
+		fi
+		log_end_msg 0
+	}
+
+	log_failure_msg () {
+		if [ -n "${1:-}" ]; then
+			log_begin_msg $@ "..."
+		fi
+		log_end_msg 1 || true
+	}
+fi
+
+if [ -f /etc/default/$BASE ]; then
+	. /etc/default/$BASE
+fi
+
+case "$1" in
+	start)
+		test -x /usr/bin/cgroupfs-mount || exit 0
+		log_begin_msg 'Mounting cgroupfs hierarchy'
+		/usr/bin/cgroupfs-mount
+		log_end_msg $?
+		;;
+
+	stop)
+		test -x /usr/bin/cgroupfs-umount || exit 0
+		log_begin_msg 'Unmounting cgroupfs hierarchy'
+		/usr/bin/cgroupfs-umount
+		log_end_msg $?
+		;;
+
+	restart|force-reload)
+		if mountpoint -q /sys/fs/cgroup; then
+			$0 stop
+		fi
+		exec $0 start
+		;;
+
+	status)
+		if mountpoint -q /sys/fs/cgroup; then
+			# TODO decide whether to detect "partial mounted" status (ie, whether all available subsystems are mounted correctly)
+			log_success_msg 'cgroupfs hierarchy is mounted'
+			exit 0
+		else
+			log_failure_msg 'cgroupfs hierarchy is not mounted'
+			exit 1
+		fi
+		;;
+
+	*)
+		echo "Usage: $0 {start|stop|restart|status}"
+		exit 1
+		;;
+esac
+
+exit 0

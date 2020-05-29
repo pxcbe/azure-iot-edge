@@ -1,0 +1,223 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          iotedge
+# Required-Start:    docker $network $local_fs $remote_fs
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Azure IoT Edge daemon
+# Description:       iotedged is the host level component
+#  of IoT Edge. It provides an abstraction for hardware security modules.
+### END INIT INFO
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+DAEMON=/usr/bin/iotedged # Introduce the server's location here
+DAEMON_ARGS="--config-file /etc/iotedge/config.yaml"           # Arguments to run the daemon with
+DESC=iotedged            # Introduce a short description here
+USER=iotedge
+GROUP=iotedge
+NAME=iotedge             # Introduce the short server's name here
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+LOGFILE=/var/log/$NAME/$NAME.log
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+MGMTSOCK=/var/run/iotedge/mgmt.sock
+WORKLOADSOCK=/var/run/iotedge/workload.sock
+
+
+# Exit if the package is not installed
+[ -x $DAEMON ] || exit 0
+
+# Read configuration variable file if it is present
+#[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+. /etc/init.d/functions
+
+# Load the VERBOSE setting and other rcS variables
+#. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+#. /lib/lsb/init-functions
+
+#
+# Function that starts the daemon/service
+#
+
+do_start()
+{
+	echo Do Start $NAME
+	mkdir -p /var/log/$NAME
+	mkdir -p /var/run/$NAME
+	chown -R $USER:$GROUP /var/run/$NAME
+	chown -R ${USER}:${GROUP} /var/lib/$NAME
+	chown -R ${USER}:${GROUP} /var/log/$NAME
+	chown -R ${USER}:${GROUP} /etc/iotedge/config.yaml
+
+	chmod 755 /var/lib/$NAME
+	chmod 755 /var/log/$NAME
+	chmod 400 /etc/iotedge/config.yaml
+
+	# Do this for debian systems which don't support FDNAMES
+	touch $MGMTSOCK
+	touch $WORKLOADSOCK
+	chown ${USER}:${GROUP} $MGMTSOCK
+	chown ${USER}:${GROUP} $WORKLOADSOCK
+	chmod 660 $MGMTSOCK
+	chmod 666 $WORKLOADSOCK
+	do_wait_sockets
+	# Return
+	#   0 if daemon has been started
+	#   1 if daemon was already running
+	#   2 if daemon could not be started
+	start-stop-daemon --start --quiet --chuid $USER --group $GROUP --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
+		|| return 10
+	start-stop-daemon --start --quiet --chuid $USER --group $GROUP \
+		--make-pidfile --pidfile $PIDFILE --background \
+		--startas /bin/bash -- -c "exec stdbuf -oL -eL $DAEMON $DAEMON_ARGS >> $LOGFILE 2>&1" \
+		|| return 2
+	# Add code here, if necessary, that waits for the process to be ready
+	# to handle requests from services started subsequently which depend
+	# on this one.  As a last resort, sleep for some time.
+	do_wait_sockets
+}
+
+## Wait for socket creation and give permissions
+do_wait_sockets()
+{
+  TIMEOUT_COUNTER=0
+  TIMEOUT=25
+  TIMEOUTREACHED=0;
+  SOCKETSFOUND=1;
+  echo "Wait for IOTEDGE Socket Files"
+  while [ 0 -eq $TIMEOUTREACHED -a 1 -eq $SOCKETSFOUND ]; do
+   [ -a $MGMTSOCK -o -a $WORKLOADSOCK ]
+   SOCKETSFOUND=$?
+   [ $TIMEOUT_COUNTER -lt $TIMEOUT ]
+   TIMEOUTREACHED=$?   
+   TIMEOUT_COUNTER=$[$TIMEOUT_COUNTER + 1]
+   sleep 1  
+  done  
+}
+
+
+## Wait for docker containerd to run
+do_wait_docker()
+{
+  if [ -f $PIDFILE ] && kill -0 $(cat $PIDFILE); then
+    echo 'iotedge already running' >&2    
+    return 1
+  fi
+  # Wait for Docker
+  DOCKERPID="/var/run/docker.pid";
+  DOCKERSOCK="/var/run/docker.sock";
+  if [ ! -f $DOCKERPID ]; then
+   ls -la $DOCKERPID
+   echo "Wait dockerd.pid"
+   sleep 10
+  fi
+  if [ ! -S $DOCKERSOCK ]; then
+    ls -la $DOCKERSOCK
+    echo "Wait docker.sock"
+   sleep 10   
+  fi
+
+  while ! ps -e |grep containerd; do
+	  sleep 2
+  	echo "wait for containerd"
+  done 
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+	# Return
+	#   0 if daemon has been stopped
+	#   1 if daemon was already stopped
+	#   2 if daemon could not be stopped
+	#   other if a failure occurred
+	start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE
+	RETVAL="$?"
+	[ "$RETVAL" = 2 ] && return 2
+	# Many daemons don't delete their pidfiles when they exit.
+	rm -f $PIDFILE
+	return "$RETVAL"
+}
+
+#
+# Function that sends a SIGHUP to the daemon/service
+#
+do_reload() {
+	#
+	# If the daemon can reload its configuration without
+	# restarting (for example, when it is sent a SIGHUP),
+	# then implement that here.
+	#
+	start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $NAME
+	return 0
+}
+
+case "$1" in
+  start)
+    [ "$VERBOSE" != no ] && echo "Starting $DESC " "$NAME"
+    	do_wait_docker
+			do_start
+    case "$?" in
+		0|1) [ "$VERBOSE" != no ] && echo 0 ;;
+		2) [ "$VERBOSE" != no ] && echo 1 ;;
+	esac
+  ;;
+  stop)
+	[ "$VERBOSE" != no ] && echo "Stopping $DESC" "$NAME"
+	do_stop
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log 0 ;;
+		2) [ "$VERBOSE" != no ] && echo 1 ;;
+	esac
+	;;
+  status)
+       status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+       ;;
+  #reload|force-reload)
+	#
+	# If do_reload() is not implemented then leave this commented out
+	# and leave 'force-reload' as an alias for 'restart'.
+	#
+	#log_daemon_msg "Reloading $DESC" "$NAME"
+	#do_reload
+	#log_end_msg $?
+	#;;
+  restart|force-reload)
+	#
+	# If the "reload" option is implemented then remove the
+	# 'force-reload' alias
+	#
+	echo "Restarting $DESC" "$NAME"
+	do_stop
+	case "$?" in
+	  0|1)
+		do_start
+		case "$?" in
+			0) echo 0 ;;
+			1) echo 1 ;; # Old process is still running
+			*) echo 1 ;; # Failed to start
+		esac
+		;;
+	  *)
+	  	# Failed to stop
+		echo 1
+		;;
+	esac
+	;;
+  *)
+	#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+	exit 3
+	;;
+esac
+
+:
+
