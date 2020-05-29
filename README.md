@@ -40,9 +40,10 @@ export VERSION=19.03.5
 chmod +x download.sh
 ./download.sh
 ```
-## Create 
-sudo passwd
+## Create a root-user and log in as root
+```bash sudo passwd
 su root
+```
 
 ## Execute Setup.sh in archive
 ```bash
