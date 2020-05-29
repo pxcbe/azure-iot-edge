@@ -1,66 +1,43 @@
-# Docker on AXCF2152
+﻿# Docker on AXCF2152
 
-The script `create-archive.sh` creates an installer with the Docker 19.03.05-ce on which AXC F 2152 can be installed. The installer is created with [makeself](http://makeself.io).
-
-The necessary kernel flags are available since FW 2020.0. The installer can be downloaded as Artifact of the CI.
-
-### Sources
-
-How to install Docker directly with binaries https://docs.docker.com/install/linux/docker-ce/binaries/#install-static-binaries
-
-Binaries for the Community Edition https://download.docker.com/linux/static/stable/armhf/
-
-Debian Package https://download.docker.com/linux/debian/dists/stretch/pool/stable/armhf/
-
-Create group `docker`:
-
-```bash
-groupadd docker
-usermod -a -G docker admin
-```
-
-cgroup mount script https://packages.debian.org/sid/all/cgroupfs-mount
-
-Kernel check-config for docker https://github.com/moby/moby/blob/master/contrib/check-config.sh
-
-# Download and install on target
+## Download and install on target
 
 Alternatively to the download of the installer the bin can be downloaded directly to the target.
 
 
-## Download the Project
+### Download the Project
 ```bash
 git clone https://gitlab.phoenixcontact.com/ow/3kikefgtko.git
 cd azure-iot-edge
 ```
 
-## Download docker and replace the version (example 19.03.5)
+### Download docker and replace the version (example 19.03.5)
 ```bash
 export VERSION=19.03.5
 chmod +x download.sh
 ./download.sh
 ```
-## Create a root-user and log in as root
+### Create a root-user and log in as root
 ```bash
 sudo passwd
 su root
 ```
 
-## Execute Setup.sh in archive
+### Execute Setup.sh in archive
 ```bash
 cd archive
 chmod +x setup.sh
 ./setup.sh
 ```
 
-## modify IoT Parameters and Setup EdgeDevice
+### modify IoT Parameters and Setup EdgeDevice
 ```bash
 cd ..
 chmod +x SetupEdge.sh
 ./SetupEdge.sh
 ```
 
-## Modify config file
+### Modify config file
 ```bash
 nano /etc/iotedge/config.yaml
 ```
@@ -77,11 +54,11 @@ listen:
    workload_uri: "unix:///var/run/iotedge/workload.sock"
 ```
 
-## Reboot the controller
+### Reboot the controller
 ```bash
 reboot
 ```
-### Container Options
+## Container Options
 
 
 #### EdgeAgent
@@ -152,9 +129,11 @@ reboot
       }
 ....
 ``` 
+
 # IMPORTANT
 
 Remember to Disable nginx or modify edge* from port 443 -> 44X
+If you stop nginx, you'll lose the webbased management
 
 ```bash
 /etc/init.d/nginx stop
@@ -163,43 +142,59 @@ Remember to Disable nginx or modify edge* from port 443 -> 44X
 # Check Working setup with ArpVersion: 2019.9.2 (19.9.2.23465 alpha)
 
 ```bash
-#iotedge check --config-file /etc/iotedge/autoConfig.yaml --verbose
+root@axcf2152:/opt/plcnext/# iotedge check
 Configuration checks
 --------------------
-√ config.yaml is well-formed
-√ config.yaml has well-formed connection string
-√ container engine is installed and functional
-√ config.yaml has correct hostname
-√ config.yaml has correct URIs for daemon mgmt endpoint
-‼ latest security daemon
-    Installed IoT Edge daemon has version 1.0.7.1 but version 1.0.9 is available.
-    Please see https://aka.ms/iotedge-update-runtime for update instructions.
-√ host time is close to real time
-√ container time is close to host time
-√ DNS server
-‼ production readiness: certificates
-    Device is using self-signed, automatically generated certs.
-    Please see https://aka.ms/iotedge-prod-checklist-certs for best practices.
-√ production readiness: certificates expiry
-√ production readiness: container engine
-√ production readiness: logs policy
+√ config.yaml is well-formed - OK
+√ config.yaml has well-formed connection string - OK
+√ container engine is installed and functional - OK
+√ config.yaml has correct hostname - OK
+√ config.yaml has correct URIs for daemon mgmt endpoint - OK
+√ latest security daemon - OK
+√ host time is close to real time - OK
+× container time is close to host time - Error
+    Detected time drift between host and container
+√ DNS server - OK
+‼ production readiness: certificates - Warning
+    The Edge device is using self-signed automatically-generated development cer                                                                                                                                 tificates.
+    They will expire in 89 days (at 2020-08-27 21:37:08 UTC) causing module-to-m                                                                                                                                 odule and downstream device communication to fail on an active deployment.
+    After the certs have expired, restarting the IoT Edge daemon will trigger it                                                                                                                                  to generate new development certs.
+    Please consider using production certificates instead. See https://aka.ms/io                                                                                                                                 tedge-prod-checklist-certs for best practices.
+√ production readiness: container engine - OK
+√ production readiness: logs policy - OK
+‼ production readiness: Edge Agent's storage directory is persisted on the host                                                                                                                                  filesystem - Warning
+    The edgeAgent module is not configured to persist its /tmp/edgeAgent directo                                                                                                                                 ry on the host filesystem.
+    Data might be lost if the module is deleted or updated.
+    Please see https://aka.ms/iotedge-storage-host for best practices.
+‼ production readiness: Edge Hub's storage directory is persisted on the host fi                                                                                                                                 lesystem - Warning
+    The edgeHub module is not configured to persist its /tmp/edgeHub directory o                                                                                                                                 n the host filesystem.
+    Data might be lost if the module is deleted or updated.
+    Please see https://aka.ms/iotedge-storage-host for best practices.
 
 Connectivity checks
 -------------------
-√ host can connect to and perform TLS handshake with IoT Hub AMQP port
-√ host can connect to and perform TLS handshake with IoT Hub HTTPS port
-√ host can connect to and perform TLS handshake with IoT Hub MQTT port
-√ container on the default network can connect to IoT Hub AMQP port
-√ container on the default network can connect to IoT Hub HTTPS port
-√ container on the default network can connect to IoT Hub MQTT port
-√ container on the IoT Edge module network can connect to IoT Hub AMQP port
-√ container on the IoT Edge module network can connect to IoT Hub HTTPS port
-√ container on the IoT Edge module network can connect to IoT Hub MQTT port
-√ Edge Hub can bind to ports on host
+√ host can connect to and perform TLS handshake with IoT Hub AMQP port - OK
+√ host can connect to and perform TLS handshake with IoT Hub HTTPS / WebSockets                                                                                                                                  port - OK
+√ host can connect to and perform TLS handshake with IoT Hub MQTT port - OK
+√ container on the default network can connect to IoT Hub AMQP port - OK
+√ container on the default network can connect to IoT Hub HTTPS / WebSockets por                                                                                                                                 t - OK
+√ container on the default network can connect to IoT Hub MQTT port - OK
+× container on the IoT Edge module network can connect to IoT Hub AMQP port - Error
+    Container on the azure-iot-edge network could not connect to plcnextbe.azure-devices.net:5671
+× container on the IoT Edge module network can connect to IoT Hub HTTPS / WebSockets port - Error
+    Container on the azure-iot-edge network could not connect to plcnextbe.azure-devices.net:443
+× container on the IoT Edge module network can connect to IoT Hub MQTT port - Error
+    Container on the azure-iot-edge network could not connect to plcnextbe.azure-devices.net:8883
 
-One or more checks raised warnings.
+16 check(s) succeeded.
+3 check(s) raised warnings. Re-run with --verbose for more details.
+4 check(s) raised errors. Re-run with --verbose for more details.
+
+
 ```
 
+
+# Network settings
 ```bash
 #docker network inspect azure-iot-edge
 [
