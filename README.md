@@ -4,7 +4,7 @@ The script `create-archive.sh` creates an installer with the Docker 19.03.05-ce 
 
 The necessary kernel flags are available since FW 2020.0. The installer can be downloaded as Artifact of the CI.
 
-## Sources
+### Sources
 
 How to install Docker directly with binaries https://docs.docker.com/install/linux/docker-ce/binaries/#install-static-binaries
 
@@ -23,12 +23,12 @@ cgroup mount script https://packages.debian.org/sid/all/cgroupfs-mount
 
 Kernel check-config for docker https://github.com/moby/moby/blob/master/contrib/check-config.sh
 
-## Download and install on target
+# Download and install on target
 
 Alternatively to the download of the installer the bin can be downloaded directly to the target.
 
 
-# Download the Project
+## Download the Project
 ```bash
 git clone https://gitlab.phoenixcontact.com/ow/3kikefgtko.git
 cd azure-iot-edge
@@ -59,9 +59,13 @@ chmod +x SetupEdge.sh
 ./SetupEdge.sh
 ```
 
-## Add connection string
+## Modify config file
+```bash
 nano /etc/iotedge/config.yaml
+```
 
+## Reboot the controller
+```bash
 reboot
 ```
 ### Container Options
@@ -139,6 +143,9 @@ reboot
 
 Remember to Disable nginx or modify edge* from port 443 -> 44X
 
+```bash
+/etc/init.d/nginx stop
+```
 
 # Check Working setup with ArpVersion: 2019.9.2 (19.9.2.23465 alpha)
 
