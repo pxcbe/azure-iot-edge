@@ -1,5 +1,7 @@
 ﻿# Docker on AXCF2152
 
+### An 8 gb - PLCnext SD card is nessesary 
+
 ## Download and install on target
 
 Alternatively to the download of the installer the bin can be downloaded directly to the target.
