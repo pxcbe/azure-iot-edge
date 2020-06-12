@@ -1,4 +1,4 @@
-﻿# Docker on AXCF2152
+﻿# Docker on AXC F 2152
 
 ### An 8 gb - PLCnext SD card is nessesary 
 
@@ -9,7 +9,7 @@ Alternatively to the download of the installer the bin can be downloaded directl
 
 ### Download the Project
 ```bash
-git clone https://gitlab.phoenixcontact.com/ow/3kikefgtko.git
+git clone https://github.com/pxcbe/azure-iot-edge.git
 cd azure-iot-edge
 ```
 
