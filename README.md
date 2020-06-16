@@ -56,6 +56,18 @@ listen:
    workload_uri: "unix:///var/run/iotedge/workload.sock"
 ```
 
+### Tempory! IP tables broke during install
+``` 
+chmod +x /usr/sbin/ip6tables /usr/sbin/ip6tables-restore /usr/sbin/ip6tables-save
+chmod +x /usr/sbin/iptables /usr/sbin/iptables-restore /usr/sbin/iptables-save
+
+ln -s -f /usr/lib/libip4tc.so.0.1.0  /usr/lib/libip4tc.so.0
+ln -s -f /usr/lib/libip6tc.so.0.1.0 /usr/lib/libip6tc.so.0
+ln -s -f /usr/lib/libiptc.so.0.0.0 /usr/lib/libiptc.so.0
+ln -s -f /usr/lib/libxtables.so.12.0.0 libxtables.so.12
+
+```
+
 ### Reboot the controller
 ```bash
 reboot
