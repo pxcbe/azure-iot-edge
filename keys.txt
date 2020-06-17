@@ -1,0 +1,6 @@
+ HostName=iotc-1b6953ec-5e67-4011-b76b-06a840bccb7f.azure-devices.net;DeviceId=DEVICE001;SharedAccessKey=xQrKATbfFZaLJMUDsQ7U9OitvSt+rjsLJbO77Ft7zqk=
+
+ HostName=iotc-1b6953ec-5e67-4011-b76b-06a840bccb7f.azure-devices.net;DeviceId=DEVICE002;SharedAccessKey=65CxhAZBi8naRi6oVzM5f6NHOLR3juOIhbpTmqlS9JY=
+
+ HostName=iotc-1b6953ec-5e67-4011-b76b-06a840bccb7f.azure-devices.net;DeviceId=DEVICE003;SharedAccessKey=kBvwE6Un6eP1/urs6fAW78cv6RVEMSIpysM7vZxExcA=
+
