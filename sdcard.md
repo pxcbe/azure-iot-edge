@@ -1,4 +1,4 @@
-#Instructions for prepared SD card
+# Instructions for prepared SD card
 
 ## Start an SSH connection with the controller
 
