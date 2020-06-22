@@ -11,7 +11,14 @@ su
 phoenixroot
 ```
 
-## iotedge ceck
+## Change connectionstring 
+
+```
+nano /etc/iotedge/config.yaml
+```
+
+
+## iotedge check
 
 Use the selfcheck to see if configutarion is ok
 
@@ -19,10 +26,4 @@ Use the selfcheck to see if configutarion is ok
 iotedge check --verbose
 ```
 
-Result should give
-
-``` 
-
-
-```
-
+## Until OPC UA module is modified, the MODBUS TCP module is the preferred way to bring your data to the cloud.
