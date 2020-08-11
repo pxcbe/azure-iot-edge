@@ -15,8 +15,8 @@ cd tmp_install
 #curl  -L https://aka.ms/libiothsm-std-linux-armhf-latest -o libiothsm-std.deb
 #curl  -L https://aka.ms/iotedged-linux-armhf-latest -o iotedge.deb
 
-curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.9.2/libiothsm-std_1.0.9.2-1-1_debian9_armhf.deb -o libiothsm-std.deb
-curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.9.2/iotedge_1.0.9.2-1_debian9_armhf.deb -o iotedge.deb
+curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.9.4/libiothsm-std_1.0.9.4-1-1_debian9_armhf.deb -o libiothsm-std.deb
+curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.9.4/iotedge_1.0.9.4-1_debian9_armhf.deb -o iotedge.deb
 
 dpkg -x iotedge.deb .
 dpkg -x libiothsm-std.deb .
