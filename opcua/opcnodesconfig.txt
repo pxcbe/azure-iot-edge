@@ -1,0 +1,18 @@
+[
+  {
+    "EndpointUrl": "opc.tcp://192.168.10.226:53530/OPCUA/SimulationServer",
+    "UseSecurity": false,
+    "OpcNodes": [
+      {
+        "Id": "ns=3;s=Counter",
+	"OpcSamplingInterval": 2000,
+	"OpcPublishingInterval": 5000
+      },
+      {
+        "Id": "ns=3;s=Sinusoid",
+	"OpcSamplingInterval": 2000,
+	"OpcPublishingInterval": 5000
+ }
+    ]
+  }
+]
