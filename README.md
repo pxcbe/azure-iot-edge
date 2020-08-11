@@ -1,4 +1,4 @@
-﻿# Docker on AXC F 2152
+# Azure-iot-edge on AXC F 2152
 
 ### An 8 gb - PLCnext SD card is nessesary 
 
