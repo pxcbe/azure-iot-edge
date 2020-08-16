@@ -13,6 +13,12 @@ git clone https://github.com/pxcbe/azure-iot-edge.git
 cd azure-iot-edge
 ```
 
+## Create Root user and log in as Root
+
+```
+sudo passwd root
+su
+```
 ### Modify config file
 
 Please copy paste your connection string to the file config.yaml (line 55)
