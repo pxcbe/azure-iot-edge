@@ -1,4 +1,4 @@
-# Azure-iot-edge on AXC F 2152
+# Azure-iot-edge on AXC F 2152 FW 2020.3
 
 ### An 8 gb - PLCnext SD card is nessesary 
 
@@ -13,59 +13,14 @@ git clone https://github.com/pxcbe/azure-iot-edge.git
 cd azure-iot-edge
 ```
 
-### Download docker and replace the version (example 19.03.5)
-```bash
-export VERSION=19.03.5
-chmod +x download.sh
-./download.sh
-```
-### Create a root-user and log in as root
-```bash
-sudo passwd
-su root
-```
+### Modify config file
 
-### Execute Setup.sh in archive
-```bash
-cd archive
-chmod +x setup.sh
-./setup.sh
-```
+Please copy paste your connection string to the file config.yaml (line 55)
 
 ### modify IoT Parameters and Setup EdgeDevice
 ```bash
-cd ..
 chmod +x SetupEdge.sh
 ./SetupEdge.sh
-```
-
-### Modify config file
-```bash
-nano /etc/iotedge/config.yaml
-```
-
-1. Copy paste your connectionstring
-2. Set the hostname to:
-```
-axcf2152
-```
-3. change the listen ports to :
-```
-listen: 
-   management_uri: "unix:///var/run/iotedge/mgmt.sock" 
-   workload_uri: "unix:///var/run/iotedge/workload.sock"
-```
-
-### Tempory! IP tables broke during install
-``` 
-chmod +x /usr/sbin/ip6tables /usr/sbin/ip6tables-restore /usr/sbin/ip6tables-save
-chmod +x /usr/sbin/iptables /usr/sbin/iptables-restore /usr/sbin/iptables-save
-
-ln -s -f /usr/lib/libip4tc.so.0.1.0  /usr/lib/libip4tc.so.0
-ln -s -f /usr/lib/libip6tc.so.0.1.0 /usr/lib/libip6tc.so.0
-ln -s -f /usr/lib/libiptc.so.0.0.0 /usr/lib/libiptc.so.0
-ln -s -f /usr/lib/libxtables.so.12.0.0 libxtables.so.12
-
 ```
 
 ### Reboot the controller
@@ -73,7 +28,6 @@ ln -s -f /usr/lib/libxtables.so.12.0.0 libxtables.so.12
 reboot
 ```
 ## Container Options
-
 
 #### EdgeAgent
 ``` json
