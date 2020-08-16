@@ -1,0 +1,48 @@
+## Container Options
+
+#### EdgeAgent
+``` json
+{
+  "HostConfig": {
+    "Dns": [
+      "8.8.8.8"
+    ],
+    "Binds": [
+      "/etc/resolv.conf:/etc/resolv.conf:ro"
+    ]
+  }
+}
+``` 
+#### EdgeHub
+``` json
+{
+  "HostConfig": {
+    "PortBindings": {
+      "443/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "444"
+        }
+      ],
+      "5671/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "5671"
+        }
+      ],
+      "8883/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "8883"
+        }
+      ]
+    },
+    "Dns": [
+      "8.8.8.8"
+    ],
+    "Binds": [
+      "/etc/resolv.conf:/etc/resolv.conf:ro"
+    ]
+  }
+}
+```

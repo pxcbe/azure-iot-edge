@@ -1,0 +1,21 @@
+#### Modbus
+``` json
+....
+"SlaveConfigs": {
+        "Slave01": {
+          "SlaveConnection": "172.18.0.1",
+          "HwId": "WSE",
+          "RetryCount": "100",
+          "RetryInterval": "10",
+          "Operations": {
+            "Op01": {
+              "PollingInterval": "1000",
+              "UnitId": "1",
+              "StartAddress": "400001",
+              "Count": "2",
+              "DisplayName": "WirlessHartDevices"
+            }
+          }
+        }
+      }
+....
