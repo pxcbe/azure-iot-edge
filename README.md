@@ -13,17 +13,15 @@ git clone https://github.com/pxcbe/azure-iot-edge.git
 cd azure-iot-edge
 ```
 
-### modify IoT Parameters and Setup EdgeDevice
-```bash
-cd ..
-chmod +x SetupEdge.sh
-./SetupEdge.sh
-```
-
 ### Modify config file
 
 Please copy paste your connection string to the file config.yaml (line 55)
 
+### modify IoT Parameters and Setup EdgeDevice
+```bash
+chmod +x SetupEdge.sh
+./SetupEdge.sh
+```
 
 ### Reboot the controller
 ```bash
