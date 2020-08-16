@@ -26,6 +26,8 @@ cd archive
 chmod +x setup.sh
 ./setup.sh
 
+cd ..
+
 ### BEGIN INIT INFO
 ## This is a Beta
 
