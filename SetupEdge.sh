@@ -5,6 +5,31 @@ echo "Execute as root!"
 ## Setup Docker/balena/moby
 # See other tutorial
 
+echo "Setting up Docker/moby"
+echo " Binaries included in repo"
+
+set -x
+mkdir tmp_moby
+
+dpkg -x ./moby_engine.deb tmp_moby
+
+dpkg -x ./moby_cli.deb tmp_moby
+
+
+cp -R ./tmp_moby/* ./archive/
+
+
+echo " Docker setup succesfull"
+echo " extract archive"
+
+cd archive
+chmod +x setup.sh
+./setup.sh
+
+cd ..
+chmod +x SetupEdge.sh
+./SetupEdge.sh
+
 ### BEGIN INIT INFO
 ## This is a Beta
 
