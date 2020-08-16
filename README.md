@@ -1,4 +1,4 @@
-# Azure-iot-edge on AXC F 2152
+# Azure-iot-edge on AXC F 2152 FW 2020.3
 
 ### An 8 gb - PLCnext SD card is nessesary 
 
