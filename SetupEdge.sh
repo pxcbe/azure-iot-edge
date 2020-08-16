@@ -27,8 +27,6 @@ chmod +x setup.sh
 ./setup.sh
 
 cd ..
-chmod +x SetupEdge.sh
-./SetupEdge.sh
 
 ### BEGIN INIT INFO
 ## This is a Beta
