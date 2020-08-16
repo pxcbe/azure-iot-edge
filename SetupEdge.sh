@@ -95,21 +95,8 @@ chown admin:plcnext /var/lib/iotedge
 
 
 # TODO: Change your connect string and Agent image here!
-ConnectString="HostName=PxCIoTHUB.azure-devices.net;DeviceId=PlcNextAlpha;SharedAccessKey=5aKnr8XUob6xkDAlAX/J45tIgVLx73ZFJwxjMXUSU0k="
-agentImage="mcr.microsoft.com/azureiotedge-agent:1.0"
-management_uri="unix:///var/run/iotedge/mgmt.sock"
-workload_uri="unix:///var/run/iotedge/workload.sock"
-hostname="axcf2152"
-docker_uri="unix:///var/run/docker.sock" 
 
-if [ ! -f "/etc/iotedge/autoConfig.yaml" ]; then
-    echo "Config not existing"
-    cp archive/etc/iotedge/autoConfig.yaml /etc/iotedge/autoConfig.yaml
-    cat /etc/iotedge/autoConfig.yaml
-    else
-    echo "Config existing"
-    cat /etc/iotedge/autoConfig.yaml
-fi
+cp ./config.yaml /etc/iotedge
 
 ## RC Update 
 ### configure autostart of iotedge
