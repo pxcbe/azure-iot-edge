@@ -44,5 +44,21 @@ If you stop nginx, you'll lose the webbased management
 /etc/init.d/nginx stop
 ```
 
+# TROUBLESHOOT
+
+To check if the installation was succesfull try this command:
+```
+iotedge check -v 
+```
+
+## Connection Demon
+
+Getting the next error message and just rebooted the controller?
+Wait a good minute or two, the problem should resolve itself.
+
+```
+× config.yaml has correct URIs for daemon mgmt endpoint - Error
+    Error: could not execute list-modules request: an error occurred trying to connect: Connection refused (os error 111)
+```
 
 
