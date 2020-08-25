@@ -10,7 +10,7 @@ Alternatively to the download of the installer the bin can be downloaded directl
 ### Download the Project
 ```bash
 git clone https://github.com/pxcbe/azure-iot-edge.git
-cd azure-iot-edge
+cd azure-iot-edge/install
 ```
 
 ## Create Root user and log in as Root
