@@ -52,7 +52,7 @@
 # Manual provisioning configuration
 provisioning:
   source: "manual"
-  device_connection_string: "HostName=plcnextbe.azure-devices.net;DeviceId=pxctest;SharedAccessKey=DdDOty8tkHYhTFByy7J4hzp5mjN8h5GCUM4yK9oNHr0="
+  device_connection_string: "YOUR CONNECTION STRING HERE"
 
 # DPS TPM provisioning configuration
 # provisioning:
