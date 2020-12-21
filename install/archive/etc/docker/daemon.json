@@ -1,11 +1,6 @@
 {
-  "data-root": "/media/rfs/rw/var/lib/docker",
+  "data-root": "/media/rfs/rw/var/lib/balena",
   "storage-driver": "overlay2",
-  "iptables": false,
-    "log-driver": "json-file",
-    "log-opts": {
-        "max-size": "10m",
-        "max-file": "3"
-    },
-   "dns": ["8.8.8.8","1.1.1.1"]	
+  "bip": "172.18.2.1/24",
+  "iptables": true
 }

@@ -2,7 +2,7 @@
 set -e
 
 ### BEGIN INIT INFO
-# Provides:           docker
+# Provides:           Docker
 # Required-Start:     $syslog $remote_fs
 # Required-Stop:      $syslog $remote_fs
 # Should-Start:       cgroupfs-mount cgroup-lite
@@ -86,7 +86,7 @@ if [ -f /etc/default/$BASE ]; then
 	. /etc/default/$BASE
 fi
 
-# Check docker is present
+# Check Docker is present
 if [ ! -x $DOCKERD ]; then
 	log_failure_msg "$DOCKERD not present or not executable"
 	exit 1
@@ -152,17 +152,8 @@ case "$1" in
 		fi
 
 		log_begin_msg "Starting $DOCKER_DESC: $BASE"
-#		start-stop-daemon --start --background \
-#			--no-clolse \
-#			--exec "$DOCKERD" \
-#			--pidfile "$DOCKER_SSD_PIDFILE" \
-#			--make-pidfile \
-#			-- \
-#				-p "$DOCKER_PIDFILE" \
-#				$DOCKER_OPTS \
-#					>> "$DOCKER_LOGFILE" 2>&1
 
-		start-stop-daemon --start --background \
+		start-stop-daemon -g docker --start --background \
 			--pidfile "$DOCKER_SSD_PIDFILE" \
 			--make-pidfile \
 			--startas /bin/bash \
@@ -170,8 +161,6 @@ case "$1" in
 				-c "exec $DOCKERD -p $DOCKER_PIDFILE $DOCKER_OPTS >> $DOCKER_LOGFILE 2>&1"
 
 		log_end_msg $?
-		echo "loaded firewall rules for docker (/etc/init.d/dockerfw start)"
-		/etc/init.d/dockerfw start
 		;;
 
 	stop)
@@ -184,33 +173,10 @@ case "$1" in
 		else
 			log_warning_msg "Docker already stopped - file $DOCKER_SSD_PIDFILE not found."
 		fi
-		echo "flushed firewall rules for docker (/etc/init.d/dockerfw stop)"
-		/etc/init.d/dockerfw stop
 		;;
-
-#	restart)
-#		check_init
-#		fail_unless_root
-#		docker_pid=`cat "$DOCKER_SSD_PIDFILE" 2>/dev/null`
-#		[ -n "$docker_pid" ] \
-#			&& ps -p $docker_pid > /dev/null 2>&1 \
-#			&& $0 stop
-#		$0 start
-#		;;
-
-	force-reload)
-		check_init
-		fail_unless_root
-		$0 restart
-		;;
-
-#	status)
-#		check_init
-#		status_of_proc -p "$DOCKER_SSD_PIDFILE" "$DOCKERD" "$DOCKER_DESC"
-#		;;
 
 	*)
-		echo "Usage: service docker {start|stop}"
+		echo "Usage: service Docker {start|stop}"
 		exit 1
 		;;
 esac

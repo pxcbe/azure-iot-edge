@@ -16,7 +16,7 @@ chown -R root:root ./usr/bin/.
 chmod -R 755 ./usr/bin/.
 cp -a ./usr/. /usr/
 
-cp -a ./etc/nftables/. /etc/nftables 
+cp -a ./etc/iptables/. /etc/iptables 
 
 groupadd docker
 usermod -a -G docker admin
