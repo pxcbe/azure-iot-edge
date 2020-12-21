@@ -5,16 +5,62 @@ echo "Execute as root!"
 ## Setup Docker/balena/moby
 # See other tutorial
 
+## FIND MACHINE TYPE
+# ONLY PLCNEXT ARM32V7 or X86 are supported
+
+# VERSION=$(echo "$VERSION" | sed 's|+|.|g')
+
+machine=$(uname -m)
+
+case "$machine" in
+#	"armv5"*)
+#		arch="armv5"
+#		;;
+#	"armv6"*)
+#		arch="armv6"
+#		;;
+	"armv7"*)
+		arch="armv7"
+		;;
+#	"armv8"*)
+#		arch="aarch64"
+#		;;
+#	"aarch64"*)
+#		arch="aarch64"
+#		;;
+#	"i386")
+#		arch="i386"
+#		;;
+#	"i686")
+#		arch="i386"
+#		;;
+	"x86_64")
+		arch="x86_64"
+		;;
+	*)
+		echo "Unknown machine type: $machine"
+		exit 1
+esac
+
+echo "Machine type: $machine"
+
 echo "Setting up Docker/moby"
 echo " Binaries included in repo"
 
 set -x
 mkdir tmp_moby
 
-curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-engine/moby-engine_3.0.13%2Bazure-0_armhf.deb -o moby_engine.deb
-curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-cli/moby-cli_3.0.13%2Bazure-0_armhf.deb -o moby_cli.deb
-
-
+case "$arch" in
+	"armv7")
+		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-engine/moby-engine_3.0.13%2Bazure-0_armhf.deb -o moby_engine.deb
+		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-cli/moby-cli_3.0.13%2Bazure-0_armhf.deb -o moby_cli.deb
+		;;
+	"x86_64")
+		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-engine/moby-engine_3.0.13%2Bazure-0_amd64.deb -o moby_engine.deb
+		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-cli/moby-cli_3.0.13%2Bazure-0_amd64.deb 	-o moby_engine.deb
+		;;
+esac
+		
 dpkg -x ./moby_engine.deb tmp_moby
 dpkg -x ./moby_cli.deb tmp_moby
 
@@ -41,8 +87,16 @@ cd tmp_install
 #curl  -L https://aka.ms/libiothsm-std-linux-armhf-latest -o libiothsm-std.deb
 #curl  -L https://aka.ms/iotedged-linux-armhf-latest -o iotedge.deb
 
-curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/libiothsm-std_1.0.10.4-1-1_debian9_armhf.deb -o libiothsm-std.deb
-curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/iotedge_1.0.10.4-1_debian9_armhf.deb -o iotedge.deb
+case "$arch" in
+	"armv7")
+		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/libiothsm-std_1.0.10.4-1-1_debian9_armhf.deb -o libiothsm-std.deb
+		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/iotedge_1.0.10.4-1_debian9_armhf.deb -o iotedge.deb
+		;;
+	"x86_64")
+		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/libiothsm-std_1.0.10.4-1-1_debian9_amd64.deb -o libiothsm-std.deb
+		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/iotedge_1.0.10.4-1_debian9_amd64.deb -o iotedge.deb
+		;;
+esac
 
 dpkg -x iotedge.deb .
 dpkg -x libiothsm-std.deb .
