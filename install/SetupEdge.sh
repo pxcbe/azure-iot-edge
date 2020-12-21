@@ -11,8 +11,10 @@ echo " Binaries included in repo"
 set -x
 mkdir tmp_moby
 
-dpkg -x ./moby_engine.deb tmp_moby
+curl  -L https://packages.microsoft.com/ubuntu/16.04/prod/pool/main/m/moby-engine/moby-engine_20.10.1%2Bazure-1_armhf.deb -o moby_engine.deb
+curl  -L https://packages.microsoft.com/ubuntu/16.04/prod/pool/main/m/moby-cli/moby-cli_20.10.1%2Bazure-1_armhf.deb -o moby_cli.deb
 
+dpkg -x ./moby_engine.deb tmp_moby
 dpkg -x ./moby_cli.deb tmp_moby
 
 
