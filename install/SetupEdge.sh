@@ -57,7 +57,7 @@ case "$arch" in
 		;;
 	"x86_64")
 		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-engine/moby-engine_3.0.13%2Bazure-0_amd64.deb -o moby_engine.deb
-		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-cli/moby-cli_3.0.13%2Bazure-0_amd64.deb 	-o moby_engine.deb
+		curl  -L https://packages.microsoft.com/repos/microsoft-debian-stretch-multiarch-prod/pool/main/m/moby-cli/moby-cli_3.0.13%2Bazure-0_amd64.deb 	-o moby_cli.deb
 		;;
 esac
 		
