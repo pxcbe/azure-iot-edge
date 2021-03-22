@@ -36,6 +36,13 @@ reboot
 
 
 # IMPORTANT
+## FOR AXC F 3152
+execute this command as root!
+
+```bash
+sudo ln -sv /lib /lib64
+```
+
 
 Remember to Disable nginx or modify edge* from port 443 -> 44X
 If you stop nginx, you'll lose the webbased management
