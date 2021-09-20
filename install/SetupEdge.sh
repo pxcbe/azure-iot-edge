@@ -89,8 +89,8 @@ cd tmp_install
 
 case "$arch" in
 	"armv7")
-		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/libiothsm-std_1.0.10.4-1-1_debian9_armhf.deb -o libiothsm-std.deb
-		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/iotedge_1.0.10.4-1_debian9_armhf.deb -o iotedge.deb
+		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.1.6/libiothsm-std_1.1.6-1-1_debian9_armhf.deb -o libiothsm-std.deb
+		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.1.6/iotedge_1.1.6-1_debian9_armhf.deb -o iotedge.deb
 		;;
 	"x86_64")
 		curl  -L https://github.com/Azure/azure-iotedge/releases/download/1.0.10.4/libiothsm-std_1.0.10.4-1-1_debian9_amd64.deb -o libiothsm-std.deb
